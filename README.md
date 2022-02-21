@@ -84,3 +84,7 @@ cd ~/git/PublicBotProfiles/projects/artifulate_bot_profiles
 └── outputs/*
 
 ```
+
+## Design Your Own Artifulate Bot Profile
+
+

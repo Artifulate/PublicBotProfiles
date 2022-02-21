@@ -1,0 +1,5 @@
+rule ConfigFiles 
+  transform profile : Profile { 
+  template : "./templates/config.egl"  
+  target : "../generated/" + profile.key + ".json"
+}

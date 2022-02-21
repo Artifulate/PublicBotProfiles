@@ -1,0 +1,63 @@
+{
+  "category": "[%=profile.category%]",
+  "name": "[%=profile.name%]",
+  "key": "[%=profile.key%]",
+  "roles": [
+  [% for (r in profile.roles) { %]
+    "[%=r%]"[%if(hasMore){%],[%}%]
+
+  [% } %]
+  ],
+  "states": {
+    [% for (s in profile.states) { %]
+    "[%=s.name%]": {
+      "name": "[%=s.name%]",
+      "entryLabel": "[%=s.entryLabel%]",
+      "label": "[%=s.label%]",
+      [%if(s.role <> null){%]
+      "role": "[%=s.role%]",
+      [%}%]
+      [%if(s.role == null){%]
+      "role": null,
+      [%}%]
+      [%if(s.isInitialState <> null){%]
+      "initialState": [%=s.isInitialState%],
+      [%}%]
+      [%if(s.isInitialState == null){%]
+      "initialState": false,
+      [%}%]
+      [%if(s.isEndState <> null){%]
+      "endState": [%=s.isEndState%]
+      [%}%]
+      [%if(s.isEndState == null){%]
+      "endState": false
+      [%}%]
+    }[%if(hasMore){%],[%}%]
+
+    [% } %]
+  },
+  "transitions": [
+    [% for (t in profile.transitions) { %]
+    {
+      "id": "[%=t.hashCode()%]",
+      "from": "[%=t.from.name%]",
+      "to": "[%=t.to.name%]",
+      "operation": {
+        "name": "[%=t.op.name%]",
+        "requiredInputs": [
+        [% for (i in t.op.requiredInputs) { %]
+          {
+            "name": "[%=i.name%]",
+            "label": "[%=i.label%]",
+            "type": "[%=i.type%]",
+            "constraints": [[% for (c in i.constraints) { %]"[%=c%]"[%if(hasMore){%],[%}%][% } %]]
+          }[%if(hasMore){%],[%}%]
+
+        [% } %]
+        ]
+      }
+    }[%if(hasMore){%],[%}%]
+    
+    [% } %]
+  ]
+}

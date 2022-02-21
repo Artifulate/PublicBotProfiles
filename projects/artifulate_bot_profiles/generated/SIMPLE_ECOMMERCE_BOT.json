@@ -1,0 +1,283 @@
+{
+  "category": "PUBLIC",
+  "name": "Simple E-COMMERCE Bot",
+  "key": "SIMPLE_ECOMMERCE_BOT",
+  "roles": [
+    "Customer",
+    "Provider"
+  ],
+  "states": {
+    "START": {
+      "name": "START",
+      "entryLabel": "สั่งซื้อสินค้า",
+      "label": "รอร้านตอบรับคำสั่งซื้อสินค้า",
+      "role": "Customer",
+      "initialState": false,
+      "endState": false
+    },
+    "ORDERED": {
+      "name": "ORDERED",
+      "entryLabel": "สั่งซื้อสินค้า",
+      "label": "รอร้านตอบรับคำสั่งซื้อสินค้า",
+      "role": "Customer",
+      "initialState": true,
+      "endState": false
+    },
+    "ACCEPTED": {
+      "name": "ACCEPTED",
+      "entryLabel": "รับคำสั่งซื้อ",
+      "label": "ร้านรับคำสั่งซื้อของคุณแล้ว",
+      "role": "Provider",
+      "initialState": false,
+      "endState": false
+    },
+    "REJECTED": {
+      "name": "REJECTED",
+      "entryLabel": "ปฏิเสธคำสั่งซื้อ",
+      "label": "คำสั่งของคุณซื้อถูกปฏิเสธ",
+      "role": "Provider",
+      "initialState": false,
+      "endState": false
+    },
+    "CANCELLED": {
+      "name": "CANCELLED",
+      "entryLabel": "ยกเลิกคำสั่งซื้อ",
+      "label": "คำสั่งซื้อถูกเลิกแล้ว",
+      "role": "Customer",
+      "initialState": false,
+      "endState": true
+    },
+    "CANCELLATION_REQUESTED": {
+      "name": "CANCELLATION_REQUESTED",
+      "entryLabel": "ส่งคำสั่งยกเลิก",
+      "label": "ร้านกำลังพิจารณาคำสั่งยกเลิกของคุณ",
+      "role": "Customer",
+      "initialState": false,
+      "endState": false
+    },
+    "CANCELLATION_ACCEPTED": {
+      "name": "CANCELLATION_ACCEPTED",
+      "entryLabel": "ยอมรับส่งคำสั่งยกเลิก",
+      "label": "คำสั่งซื้อของคุณถูกเลิกแล้ว",
+      "role": "Provider",
+      "initialState": false,
+      "endState": true
+    },
+    "CANCELLATION_REJECTED": {
+      "name": "CANCELLATION_REJECTED",
+      "entryLabel": "ปฏิเสธคำสั่งยกเลิก",
+      "label": "ส่งคำสั่งยกเลิกถูกปฏิเสธ ร้านกำลังเตรียมสินค้า",
+      "role": "Provider",
+      "initialState": false,
+      "endState": false
+    },
+    "PREPARING": {
+      "name": "PREPARING",
+      "entryLabel": "เริ่มเตรียมสินค้า",
+      "label": "กำลังเตรียมสินค้า",
+      "role": "Provider",
+      "initialState": false,
+      "endState": false
+    },
+    "DELIVERED": {
+      "name": "DELIVERED",
+      "entryLabel": "ส่งสินค้าค้า",
+      "label": "อยู่ในระหว่างขั้นตอนส่งสินค้า",
+      "role": "Provider",
+      "initialState": false,
+      "endState": false
+    },
+    "RECEIVED": {
+      "name": "RECEIVED",
+      "entryLabel": "รับสินค้า",
+      "label": "ลูกค้าได้รับสินค้าแล้ว",
+      "role": "Customer",
+      "initialState": false,
+      "endState": true
+    }
+  },
+  "transitions": [
+    {
+      "id": "292641216",
+      "from": "START",
+      "to": "ORDERED",
+      "operation": {
+        "name": "make_order",
+        "requiredInputs": [
+          {
+            "name": "fullname",
+            "label": "ชื่อนามสกุล",
+            "type": "string",
+            "constraints": ["NOT_EMPTY"]
+          },
+          {
+            "name": "address",
+            "label": "ที่อยู่รับสินค้า",
+            "type": "string",
+            "constraints": ["NOT_EMPTY"]
+          },
+          {
+            "name": "phone_number",
+            "label": "เบอร๋โทรติดต่อ",
+            "type": "string",
+            "constraints": ["NOT_EMPTY"]
+          },
+          {
+            "name": "message",
+            "label": "ข้อความ",
+            "type": "string",
+            "constraints": ["NOT_EMPTY"]
+          }
+        ]
+      }
+    },    
+    {
+      "id": "1042790962",
+      "from": "ORDERED",
+      "to": "CANCELLED",
+      "operation": {
+        "name": "cancel_order",
+        "requiredInputs": [
+          {
+            "name": "message",
+            "label": "ข้อความ",
+            "type": "string",
+            "constraints": ["NOT_EMPTY"]
+          }
+        ]
+      }
+    },    
+    {
+      "id": "2130192211",
+      "from": "ORDERED",
+      "to": "ACCEPTED",
+      "operation": {
+        "name": "accept_order",
+        "requiredInputs": [
+        ]
+      }
+    },    
+    {
+      "id": "990897274",
+      "from": "ORDERED",
+      "to": "REJECTED",
+      "operation": {
+        "name": "reject_order",
+        "requiredInputs": [
+          {
+            "name": "message",
+            "label": "ข้อความ",
+            "type": "string",
+            "constraints": ["NOT_EMPTY"]
+          }
+        ]
+      }
+    },    
+    {
+      "id": "539690370",
+      "from": "ACCEPTED",
+      "to": "CANCELLATION_REQUESTED",
+      "operation": {
+        "name": "request_cancellation",
+        "requiredInputs": [
+          {
+            "name": "message",
+            "label": "ข้อความ",
+            "type": "string",
+            "constraints": ["NOT_EMPTY"]
+          }
+        ]
+      }
+    },    
+    {
+      "id": "593415583",
+      "from": "CANCELLATION_REQUESTED",
+      "to": "CANCELLATION_ACCEPTED",
+      "operation": {
+        "name": "accept_cancellation_request",
+        "requiredInputs": [
+        ]
+      }
+    },    
+    {
+      "id": "480490520",
+      "from": "CANCELLATION_REQUESTED",
+      "to": "CANCELLATION_REJECTED",
+      "operation": {
+        "name": "reject_cancellation_request",
+        "requiredInputs": [
+          {
+            "name": "message",
+            "label": "ข้อความ",
+            "type": "string",
+            "constraints": ["NOT_EMPTY"]
+          }
+        ]
+      }
+    },    
+    {
+      "id": "1489743810",
+      "from": "CANCELLATION_REJECTED",
+      "to": "PREPARING",
+      "operation": {
+        "name": "prepare_order",
+        "requiredInputs": [
+        ]
+      }
+    },    
+    {
+      "id": "540325452",
+      "from": "ACCEPTED",
+      "to": "PREPARING",
+      "operation": {
+        "name": "prepare_order",
+        "requiredInputs": [
+        ]
+      }
+    },    
+    {
+      "id": "1976804832",
+      "from": "PREPARING",
+      "to": "DELIVERED",
+      "operation": {
+        "name": "deliver_order",
+        "requiredInputs": [
+          {
+            "name": "logistic_info",
+            "label": "หลักฐานการส่งสินค้า",
+            "type": "string",
+            "constraints": ["NOT_EMPTY"]
+          },
+          {
+            "name": "message",
+            "label": "ข้อความ",
+            "type": "string",
+            "constraints": ["NOT_EMPTY"]
+          }
+        ]
+      }
+    },    
+    {
+      "id": "1959910454",
+      "from": "DELIVERED",
+      "to": "RECEIVED",
+      "operation": {
+        "name": "receive_order",
+        "requiredInputs": [
+          {
+            "name": "message",
+            "label": "ข้อความ",
+            "type": "string",
+            "constraints": ["NOT_EMPTY"]
+          },
+          {
+            "name": "rating",
+            "label": "คะแนนบริการ",
+            "type": "number",
+            "constraints": ["RANGE_1_5"]
+          }
+        ]
+      }
+    }    
+  ]
+}

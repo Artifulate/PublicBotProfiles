@@ -1,0 +1,46 @@
+@namespace(uri="https://artifulate.com", prefix="")
+package artifulate;
+
+class Project {
+  id attr String name;
+  val Profile[*] profiles;
+}
+
+class Data {
+  id attr String name;
+  attr String label;
+  attr String type;
+  attr String[*] constraints;
+}
+
+class Operation {
+  id attr String name;
+  ref Data[*] requiredInputs;
+}
+
+class Profile {
+  id attr String key;
+  attr String name;
+  attr String description;
+  attr String category;
+  attr String[*] roles;
+  val Data[*] inputs;
+  val Operation[*] operations;
+  val State[*] states;
+  val Transition[*] transitions;
+}
+
+class State {
+  id attr String name;
+  attr String entryLabel;
+  attr String label;
+  attr String role;
+  attr boolean isInitialState;
+  attr boolean isEndState;
+}
+class Transition {
+  ref State from;
+  ref State to;
+  ref Operation ~op;
+}
+

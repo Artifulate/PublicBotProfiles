@@ -66,7 +66,7 @@ Choose project number:
 1) 01_getting_started	    3) artifulate_bot_profiles
 2) 02_my_shell_program
 #? 3
-\nProject: artifulate_bot_profiles (/Users/vorachet/git/mdeshell/projects/artifulate_bot_profiles)
+\nProject: artifulate_bot_profiles (/<YourUserHome>/git/mdeshell/projects/artifulate_bot_profiles)
 \nGenerating...
 \nDone! Note that location of generated files will be specified by your .egx files\n
 

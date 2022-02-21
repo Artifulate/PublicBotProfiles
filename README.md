@@ -56,7 +56,7 @@ Your folder structure in MDESHELL environment
 
 ## Generate Artifulate Bot Profile Configuration Files
 
-Run MDESHELL runner script. 
+Run MDESHELL runner script. The script will require you enter the number of target project that needs to be computed by MDESHELL. With this example, enter number 3, where artifulate_bot_profiles is located.
 ```
 cd ~/git/mdeshell
 

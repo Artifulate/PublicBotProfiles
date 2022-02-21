@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<?nsuri https://artifulate.com?>
+
+<project name="Botprofiles">
+
+  <profile key="DRIVER_BOT" name="Driver Bot" category="PUBLIC" roles="Customer,Provider">
+
+    <state name="START" entryLabel="START" label="START" />
+    <state name="END" entryLabel="END" label="END"  />
+    <state name="BOOKED" entryLabel="เรียกรถ" label="รอคนขับตอบรับ" role="Customer" isInitialstate="true" />
+    <state name="BOOK_ACCEPTED_AND_OFFERED" entryLabel="รับงาน" label="คนขับเสนอราคาแล้ว" role="Provider" />
+    <state name="BOOK_REJECTED" entryLabel="ไม่รับงาน" label="คนขับไม่สามารถรับงานนี้" role="Provider"  isEndstate="true"/>
+    <state name="OFFER_ACCEPTED" entryLabel="ยืนยันขอใช้บริการตามราคาที่เสนอ" label="รอคนขับเดินทางมาสถานที่นัดหมาย" role="Customer" />
+    <state name="OFFER_REJECTED" entryLabel="ไม่สนใจราคาที่เสนอ" label="คำสั่งเรียกรถถูกเลิกแล้ว" role="Customer" isEndstate="true" />
+    <state name="BOOK_CANCELLED" entryLabel="ยกเลิกการขอใช้บริการ" label="คำสั่งเรียกรถถูกเลิกแล้ว" role="Customer" isEndstate="true" />
+    <state name="COMING" entryLabel="แจ้งออกเดินทางไปรับลูกค้า" label="คนขับกำลังเดินทางไปสถานที่นัดหมาย" role="Customer" />
+    <state name="ARRIVED" entryLabel="แจ้งมาถึงสถานที่นัดหมาย" label="คนขับมาถึงสถานที่นัดหมายแล้ว" role="Provider" />
+    <state name="DRIVING" entryLabel="แจ้งเริ่มขับรถไปจุดหมายปลายทาง" label="กำลังเดินทางไปจุดหมายปลายทาง" role="Provider" />
+    <state name="DROPPED" entryLabel="เสร็จงานแล้ว" label="ส่งถึงจุดหมายปลายทางแล้ว" role="Provider"  isEndstate="true"/>
+
+    <input name="message" label="ข้อความ" type="string" constraints="NOT_EMPTY" />
+    <input name="customer_name" label="ชื่อลูกค้า" type="string" constraints="NOT_EMPTY" />
+    <input name="phone_number" label="เบอร๋โทรติดต่อ" type="string" constraints="NOT_EMPTY" />
+    <input name="job_description" label="รายละเอียดงาน" type="string" constraints="NOT_EMPTY" />
+    <input name="price_offer" label="เบอร๋โทรติดต่อ" type="number" constraints="NOT_EMPTY" />
+    <input name="pickup_datetime" label="วันเวลานัดหมาย" type="datetime" constraints="NOT_EMPTY" />
+    <input name="pickup_location" label="สถานที่นัดหมาย" type="location" constraints="NOT_EMPTY" />
+    <input name="pickup_location_message" label="รายละเอียดสถานที่นัดหมาย" type="string" constraints="NOT_EMPTY" />
+    <input name="place_destination" label="จุดหมายปลายทาง" type="location" constraints="NOT_EMPTY" />
+    <input name="place_destination_message" label="รายละเอียดจุดหมายปลายทาง" type="string" constraints="NOT_EMPTY" />
+
+    <operation name="book_driver" 
+               requiredInputs="
+               customer_name, 
+               phone_number,
+               job_description,
+               pickup_datetime,
+               pickup_location,
+               pickup_location_message,
+               place_destination,
+               place_destination_message" />
+
+    <operation name="cancel_book" requiredInputs="message"/>
+    <operation name="accept_book_and_offer_price" requiredInputs="price_offer" />
+    <operation name="reject_book" requiredInputs="message"/>
+    <operation name="accept_offer" />
+    <operation name="reject_offer" requiredInputs="message"/>
+    <operation name="drive_to_pickup_location" />
+    <operation name="arrive_pickup_location" />
+    <operation name="drive_to_place_of_destination" />
+    <operation name="dropped" />
+
+    <transition op="book_driver" from="START" to="BOOKED" />
+    <transition op="cancel_book" from="BOOKED" to="BOOK_CANCELLED" />
+    <transition op="accept_book_and_offer_price" from="BOOKED" to="BOOK_ACCEPTED_AND_OFFERED" />
+    <transition op="reject_book" from="BOOKED" to="BOOK_REJECTED" />
+    <transition op="reject_offer" from="BOOK_ACCEPTED_AND_OFFERED" to="OFFER_REJECTED" />
+    <transition op="accept_offer" from="BOOK_ACCEPTED_AND_OFFERED" to="OFFER_ACCEPTED" />
+    <transition op="drive_to_pickup_location" from="OFFER_ACCEPTED" to="COMING" />
+    <transition op="arrive_pickup_location" from="COMING" to="ARRIVED" />
+    <transition op="drive_to_place_of_destination" from="ARRIVED" to="DRIVING" />
+    <transition op="dropped" from="DRIVING" to="DROPPED" />
+    <transition from="BOOK_REJECTED" to="END" />
+    <transition from="OFFER_REJECTED" to="END" />
+    <transition from="BOOK_CANCELLED" to="END" />
+    <transition from="DROPPED" to="END" />
+  </profile>
+
+</project>

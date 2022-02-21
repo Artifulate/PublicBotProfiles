@@ -41,7 +41,8 @@
     {
       "id": "[%=t.hashCode()%]",
       "from": "[%=t.from.name%]",
-      "to": "[%=t.to.name%]",
+      "to": "[%=t.to.name%]"[%if(t.op <> null){%],[%}%]
+      [%if(t.op <> null){%]
       "operation": {
         "name": "[%=t.op.name%]",
         "requiredInputs": [
@@ -56,6 +57,7 @@
         [% } %]
         ]
       }
+      [%}%]
     }[%if(hasMore){%],[%}%]
     
     [% } %]

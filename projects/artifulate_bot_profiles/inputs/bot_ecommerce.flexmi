@@ -3,8 +3,9 @@
 
 <project name="Botprofiles">
 
-  <profile key="DRIVER_SERVICE_BOT" name="Driver Service Bot" category="PUBLIC" roles="Customer,Provider">
-    <state name="START" entryLabel="สั่งซื้อสินค้า" label="รอร้านตอบรับคำสั่งซื้อสินค้า" role="Customer" />
+  <profile key="ECOMMERCE_BOT" name="ECommerce Bot" category="PUBLIC" roles="Customer,Provider">
+    <state name="START" entryLabel="START" label="START" />
+    <state name="END" entryLabel="END" label="END"  />
     <state name="ORDERED" entryLabel="สั่งซื้อสินค้า" label="รอร้านตอบรับคำสั่งซื้อสินค้า" role="Customer" isInitialstate="true" />
     <state name="ACCEPTED" entryLabel="รับคำสั่งซื้อ" label="ร้านรับคำสั่งซื้อของคุณแล้ว" role="Provider" />
     <state name="REJECTED" entryLabel="ปฏิเสธคำสั่งซื้อ" label="คำสั่งของคุณซื้อถูกปฏิเสธ" role="Provider" />
@@ -15,12 +16,14 @@
     <state name="PREPARING" entryLabel="เริ่มเตรียมสินค้า" label="กำลังเตรียมสินค้า" role="Provider" />
     <state name="DELIVERED" entryLabel="ส่งสินค้าค้า" label="อยู่ในระหว่างขั้นตอนส่งสินค้า" role="Provider" />
     <state name="RECEIVED" entryLabel="รับสินค้า" label="ลูกค้าได้รับสินค้าแล้ว" role="Customer" isEndState="true" />
+    
     <input name="message" label="ข้อความ" type="string" constraints="NOT_EMPTY" />
     <input name="rating" label="คะแนนบริการ" type="number" constraints="RANGE_1_5" />
     <input name="phone_number" label="เบอร๋โทรติดต่อ" type="string" constraints="NOT_EMPTY" />
     <input name="fullname" label="ชื่อนามสกุล" type="string" constraints="NOT_EMPTY" />
     <input name="address" label="ที่อยู่รับสินค้า" type="string" constraints="NOT_EMPTY" />
     <input name="logistic_info" label="หลักฐานการส่งสินค้า" type="string" constraints="NOT_EMPTY" />
+    
     <operation name="make_order" requiredInputs="fullname, address, phone_number, message" />
     <operation name="cancel_order" requiredInputs="message" />
     <operation name="accept_order" />
@@ -31,6 +34,7 @@
     <operation name="prepare_order" />
     <operation name="deliver_order" requiredInputs="logistic_info, message" />
     <operation name="receive_order" requiredInputs="message, rating" />
+    
     <transition op="make_order" from="START" to="ORDERED" />
     <transition op="cancel_order" from="ORDERED" to="CANCELLED" />
     <transition op="accept_order" from="ORDERED" to="ACCEPTED" />
@@ -42,6 +46,10 @@
     <transition op="prepare_order" from="ACCEPTED" to="PREPARING" />
     <transition op="deliver_order" from="PREPARING" to="DELIVERED" />
     <transition op="receive_order" from="DELIVERED" to="RECEIVED" />
+    <transition from="CANCELLED" to="END" />
+    <transition from="REJECTED" to="END" />
+    <transition from="CANCELLATION_ACCEPTED" to="END" />
+    <transition from="RECEIVED" to="END" />
   </profile>
 
 </project>
